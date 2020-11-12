@@ -12,6 +12,7 @@ class Index:
 		self.tokenizer = tokenizer
 		self.stemmer = stemmer
 		self.index = defaultdict(list)
+		self.documentWords={}
 		self.documents = {}
 		self.__unique_id = 0
 		if not stopwords:
@@ -19,6 +20,7 @@ class Index:
 		else:
 			self.stopwords = set(stopwords)
 	def add(self,file_path):
+		count=0
 		document = open(file_path,'r').read()
 		for token in [t.lower() for t in nltk.word_tokenize(document)]:
 			if token in self.stopwords:
@@ -30,6 +32,8 @@ class Index:
 				self.index[token].append([self.__unique_id,1])
 			else:
 				self.index[token][postingDocument.index(self.__unique_id)][1]+=1
+			count+=1
+		self.documentWords[self.__unique_id]=count
 		self.documents[self.__unique_id] = file_path
 		self.__unique_id += 1
 	def lookup(self, word):
