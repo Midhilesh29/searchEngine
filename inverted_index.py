@@ -47,10 +47,11 @@ class Index:
 				return None
 base_path = "/home/midhilesh/Documents/sem 9/IR/Corpus"
 documents = os.listdir(base_path)
+N=0
 index = Index(nltk.word_tokenize, 
               EnglishStemmer(), 
               nltk.corpus.stopwords.words('english'))
 for document in documents:
+	N+=1
 	path = os.path.join(base_path,document)
 	index.add(path)
-       
