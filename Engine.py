@@ -1,8 +1,12 @@
 from ranking import BM25Ranker
-from inverted_index import index,N
+import pickle
+from inverted_index import Index
+pickle_in = open("index.pkl","rb")
+indexobj= pickle.load(pickle_in)
+print(indexobj.invertedindex)
 query = input("Enter the query:")
-ranker = BM25Ranker(index,N,10,10)
+ranker = BM25Ranker(indexobj,indexobj.noOfDocuments,10,10)
 documentsRank = ranker.getDocumentsRank(query)
 for docID in documentsRank.keys():
-    print(index.documents[docID],documentsRank[docID])
+    print(indexobj.documents[docID],documentsRank[docID])
 
