@@ -14,7 +14,6 @@ class BM25Ranker:
         #print(self.d_avg)
         TD={}
         for word in query:
-            print(word)
             for doc,frequency in self.index.invertedindex[word]:
                 TD[(word,doc)] = frequency
         return TD
@@ -31,18 +30,15 @@ class BM25Ranker:
         TF = defaultdict(lambda:0)
         for q in query:
             for word,_ in TD.keys():
-                print(word)
                 if(q==word):
                     TF[q]+=1
         return TF
     def getDocumentsRank(self,query):
         query = word_tokenize(query)
+        query = [q.lower() for q in query]
         TD = self.getTDmatrix(query)
-        print(TD)
         IDF = self.getIDF(query,TD)
-        print(IDF)
         TF = self.getTermFrequency(query,TD)
-        print(TF)
         ranks=defaultdict(lambda:0)
         for q in query:
             for word,D in TD.keys():
