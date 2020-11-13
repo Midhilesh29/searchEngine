@@ -28,15 +28,12 @@ class BM25Ranker:
             IDF[q]=log(1+((self.totalDocs-Nq+0.5)/(Nq+0.5)))
         return IDF
     def getTermFrequency(self,query,TD):
-        TF = {}
+        TF = defaultdict(lambda:0)
         for q in query:
             for word,_ in TD.keys():
                 print(word)
                 if(q==word):
-                    if(q not in TF):
-                        TF[q] =1
-                    else:
-                        TF[q] +=1
+                    TF[q]+=1
         return TF
     def getDocumentsRank(self,query):
         query = word_tokenize(query)
@@ -46,20 +43,11 @@ class BM25Ranker:
         print(IDF)
         TF = self.getTermFrequency(query,TD)
         print(TF)
-        ranks={}
+        ranks=defaultdict(lambda:0)
         for q in query:
             for word,D in TD.keys():
                 if(word==q):
-                    if(q in ranks):
-                        numerator = TD[word,D]*(self.k+1)
-                        denominator = TF[q]+self.k*(1-self.b+self.b*(self.D[D]/self.d_avg))
-                        ranks[D] += IDF[q]*(numerator/denominator)
-                    else:
-                        numerator = TD[word,D]*(self.k+1)
-                        denominator = TF[q]+self.k*(1-self.b+self.b*(self.D[D]/self.d_avg))
-                        ranks[D] =IDF[q]*(numerator/denominator)    
+                    numerator = TD[word,D]*(self.k+1)
+                    denominator = TF[q]+self.k*(1-self.b+self.b*(self.D[D]/self.d_avg))
+                    ranks[D] += IDF[q]*(numerator/denominator)  
         return ranks
-        
-            
-    
-
