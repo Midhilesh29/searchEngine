@@ -4,7 +4,6 @@ from itertools import chain
 from nltk.corpus import wordnet
 from collections import defaultdict
 from nltk.stem.snowball import EnglishStemmer
-nltk.download('stopwords')
 import pickle
 
 class Index:
@@ -47,18 +46,23 @@ class Index:
 				return self.documents.get(id,None),count
 			else:
 				return None
-base_path = u"C:/Users/sreedhar/Documents/Corpus"
-documents = os.listdir(base_path)
-N=0
-indexobject = Index(nltk.word_tokenize, 
-              EnglishStemmer(), 
-              nltk.corpus.stopwords.words('english'))
-for document in documents:
-	indexobject.noOfDocuments +=1
-	path = os.path.join(base_path,document)
-	indexobject.add(path)
-#print(indexobject.invertedindex)
-#print(indexobject.documentWords)
-pickle_out = open("index.pkl", 'wb') 
-pickle.dump(indexobject, pickle_out)
-pickle_out.close()
+
+def buildIndex(base_path):
+	documents = os.listdir(base_path)
+	indexobject = Index(nltk.word_tokenize, 
+				EnglishStemmer(), 
+				nltk.corpus.stopwords.words('english'))
+	for document in documents:
+		indexobject.noOfDocuments +=1
+		path = os.path.join(base_path,document)
+		indexobject.add(path)
+	#print(indexobject.invertedindex)
+	#print(indexobject.documentWords)
+	pickle_out = open("index.pkl", 'wb') 
+	pickle.dump(indexobject, pickle_out)
+	pickle_out.close()
+
+if __name__=="__main__":
+	nltk.download('stopwords')
+	path = input("Enter the path where corpus exists:")
+	buildIndex(path)
