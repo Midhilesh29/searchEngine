@@ -24,7 +24,7 @@ class Crawler:
         if validate_link(url):  # after link is dequeued, check if it can be crawled i.e. status code, robots, MIME type
             html_text, links = visit_url(url, self.page_link_limit)  # read the HTML content of the URL, extract links
             print('writing')
-            f = open("pagemyfile"+str(page_count.get_page_num())+".txt","x")
+            f = open(self.query+str(page_count.get_page_num())+".txt","x",encoding="utf-8")
             soup = BeautifulSoup(html_text, 'html.parser')
             #print(soup.prettify())
             tags = soup.find_all('p')

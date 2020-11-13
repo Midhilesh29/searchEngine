@@ -22,7 +22,7 @@ class Index:
 			self.stopwords = set(stopwords)
 	def add(self,file_path):
 		count=0
-		document = open(file_path,'r').read()
+		document = open(file_path,'r',encoding='utf-8').read()
 		for token in [t.lower() for t in nltk.word_tokenize(document)]:
 			if token in self.stopwords:
 				continue
@@ -56,7 +56,7 @@ def buildIndex(base_path):
 		indexobject.noOfDocuments +=1
 		path = os.path.join(base_path,document)
 		indexobject.add(path)
-	#print(indexobject.invertedindex)
+	print(indexobject.invertedindex)
 	#print(indexobject.documentWords)
 	pickle_out = open("index.pkl", 'wb') 
 	pickle.dump(indexobject, pickle_out)
